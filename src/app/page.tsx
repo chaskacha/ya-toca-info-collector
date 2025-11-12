@@ -9,8 +9,8 @@ export default function Home() {
   const router = useRouter();
   const [ready, setReady] = useState(false);
   const [stationsDone, setStationsDone] = useState<number[]>([]);
-  const profile = localStorage.getItem('yt_profile');
-  console.log(profile);
+  // const profile = localStorage.getItem('yt_profile');
+  // console.log(profile);
 
   useEffect(() => {
     const onboarded = Cookies.get('yt_onboarded') === '1';

@@ -22,7 +22,6 @@ export default function WhatsAppAudioInput({
     const [mime, setMime] = useState('audio/webm');
     const [elapsed, setElapsed] = useState(0);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-    console.log(previewUrl);
 
     const mediaRec = useRef<MediaRecorder | null>(null);
     const mediaStream = useRef<MediaStream | null>(null);
@@ -177,7 +176,6 @@ export default function WhatsAppAudioInput({
         chunks.current = []; // reset for next recording
         const blob = new Blob(parts, { type });
 
-        console.log('blob size/type:', blob.size, blob.type);
         if (!blob.size) {
             setErr('No se capturó audio. Intenta de nuevo.');
             cancel();
