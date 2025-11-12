@@ -39,7 +39,7 @@
 .app-header__inner {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 12px 16px;
+    padding: 24px;
     display: flex;
     align-items: center;
     gap: 12px;

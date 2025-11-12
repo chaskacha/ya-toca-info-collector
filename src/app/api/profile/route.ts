@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     if (!parsed.success) return NextResponse.json({ error: parsed.error.format() }, { status: 400 });
 
 
-    const { cabildoName, demographics, consent, phone } = parsed.data;
+    const { demographics, consent, phone } = parsed.data;
     const updated = upsertProfile(await sid, (p) => {
         p.phone = phone;
         p.cabildoName = 'UTEC';

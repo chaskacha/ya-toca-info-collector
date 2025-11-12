@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 import type { MessagePayload, Result, UploadAudio, UploadImage } from '@/lib/types';
 import ActionButton from './basic/action-button/page';
 import { useRouter } from 'next/navigation';
+import WhatsAppAudioInput from './WspAutioInput';
 
 function markStationDone(n: number) {
     const raw = localStorage.getItem('yt_stations_done') || '[]';
@@ -21,10 +22,21 @@ async function fileToDataUrl(file: File): Promise<string> {
     });
 }
 
-export default function Composer({ kind, placeholder, num }: { kind: MessagePayload['type']; placeholder?: string; num: number }) {
+export default function Composer(
+    {
+        kind,
+        placeholder,
+        num,
+        textareaRef,
+    }: {
+        kind: MessagePayload['type'];
+        placeholder?: string;
+        num: number;
+        textareaRef: React.RefObject<HTMLTextAreaElement | null>;
+    }) {
     const [text, setText] = useState('');
     const [images, setImages] = useState<UploadImage[]>([]);
-    const [audio, setAudio] = useState<UploadAudio>(null);
+    const [audio, setAudio] = useState<{file: File; url: string; mime: string} | null>(null);
     const [busy, setBusy] = useState(false);
     // Audio recorder
     const mediaRecorder = useRef<MediaRecorder | null>(null);
@@ -42,7 +54,7 @@ export default function Composer({ kind, placeholder, num }: { kind: MessagePayl
         mr.onstop = async () => {
             const blob = new Blob(chunks.current, { type: 'audio/webm' });
             const dataUrl = await fileToDataUrl(new File([blob], 'audio.webm'));
-            setAudio({ mime: 'audio/webm', dataUrl });
+            setAudio({ file: new File([blob], 'audio.webm'), url: dataUrl, mime: 'audio/webm' });
             stream.getTracks().forEach(t => t.stop());
         };
         mr.start();
@@ -65,7 +77,15 @@ export default function Composer({ kind, placeholder, num }: { kind: MessagePayl
     const submit = async (): Promise<Result> => {
         setBusy(true);
         try {
-            const payload: MessagePayload = { type: kind, text: text.trim() || undefined, images: images.length ? images : undefined, audio };
+            const payload: MessagePayload = {
+                type: kind,
+                text: text.trim() || undefined,
+                images: images.length
+                ? images : undefined,
+                audio: audio?.file
+                ? audio?.file as any
+                : undefined
+            };
             const res = await fetch('/api/messages', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
             const j = await res.json();
             if (!res.ok) throw new Error(j.error || 'Error');
@@ -78,7 +98,13 @@ export default function Composer({ kind, placeholder, num }: { kind: MessagePayl
 
     return (
         <div className="space-y-4">
-            <textarea className="input w100" placeholder={placeholder ?? 'Escribe aquí… (puedes usar emojis)'} value={text} onChange={(e) => setText(e.target.value)} />
+            <textarea
+                ref={textareaRef}
+                className="input w100"
+                placeholder={placeholder ?? 'Escribe aquí… (puedes usar emojis)'}
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+            />
 
 
             {/* <div className="space-y-2">
@@ -92,15 +118,13 @@ export default function Composer({ kind, placeholder, num }: { kind: MessagePayl
                     </div>
                 )}
             </div> */}
-            <div className="space-y-2">
-                <label className="label mr8">Audio</label>
-                {!recording ? (
-                    <button type="button" className="btn" onClick={startRec}>🎙️ Grabar</button>
-                ) : (
-                    <button type="button" className="btn" onClick={stopRec}>⏹️ Terminar</button>
-                )}
-                {audio && <p className="help">Audio listo para enviar ({audio.mime}).</p>}
-            </div>
+            <WhatsAppAudioInput
+                label="Audio"
+                onReady={(file, url, mime) => {
+                    setAudio({ file, url, mime });       // store in form state
+                    // optionally show a lightweight toast “Audio listo para enviar”
+                }}
+            />
             <br />
             <ActionButton
                 label="Enviar"

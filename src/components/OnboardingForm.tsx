@@ -39,12 +39,22 @@ export default function OnboardingForm() {
             body: JSON.stringify({
                 cabildoName: 'UTEC',
                 phone: d.phone,
-                demographics: { gender: d.gender, age: d.age, population: d.population, ethnicity: d.ethnicity, occupation: d.occupation, education: d.education, originRegion: d.originRegion, cabildoRegion: d.cabildoRegion },
+                demographics: {
+                    gender: d.gender,
+                    age: d.age,
+                    population: d.population,
+                    ethnicity: d.ethnicity,
+                    occupation: d.occupation,
+                    education: d.education,
+                    originRegion: d.originRegion,
+                    cabildoRegion: d.cabildoRegion,
+                },
                 consent: d.consent,
             })
         });
         if (!res.ok) { alert('Error al guardar'); return; }
-        // mark as onboarded for 1 year
+        localStorage.setItem('yt_profile', JSON.stringify(await res.json()));
+        // mark as onboarded for 7 days
         Cookies.set('yt_onboarded', '1', { path: '/', sameSite: 'Lax', expires: 7 });
 
         // (optional) persist minimal client state you’ll use for the menu
@@ -113,9 +123,9 @@ export default function OnboardingForm() {
 
 
             <fieldset className="space-y-2">
-                <legend className="label">¿Autorizas uso anónimo de tus respuestas?</legend>
-                <label className="flex items-center gap-2"><input type="radio" value="yes" {...register('consent', { required: true })} /> Sí, acepto</label>
-                <label className="flex items-center gap-2"><input type="radio" value="no" {...register('consent', { required: true })} /> No acepto</label>
+                <legend className="label fs24">¿Autorizas uso anónimo de tus respuestas?</legend>
+                <label className="flex items-center gap-2 fs24"><input type="radio" value="yes" {...register('consent', { required: true })} /> Sí, acepto</label>
+                <label className="flex items-center gap-2 fs24"><input type="radio" value="no" {...register('consent', { required: true })} /> No acepto</label>
             </fieldset>
 
 

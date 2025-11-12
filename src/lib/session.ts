@@ -1,11 +1,19 @@
+// lib/session.ts
 import { cookies } from 'next/headers';
-
+import crypto from 'crypto';
 
 export async function getOrSetSession(): Promise<string> {
-    const c = cookies();
-    const existing = (await c).get('ytc_sid')?.value;
-    if (existing) return existing;
-    const sid = crypto.randomUUID();
-    (await c).set('ytc_sid', sid, { httpOnly: true, sameSite: 'lax', path: '/', secure: true });
+    const jar = cookies();
+    let sid = (await jar).get('yt_sid')?.value;
+    if (!sid) {
+        sid = crypto.randomUUID();
+        (await jar).set('yt_sid', sid, {
+            httpOnly: true,
+            sameSite: 'lax',
+            path: '/',
+            secure: process.env.NODE_ENV === 'production', // <— secure only in prod
+            maxAge: 60 * 60 * 24 * 7,
+        });
+    }
     return sid;
 }
