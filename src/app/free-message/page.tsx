@@ -11,7 +11,7 @@ export default function Page() {
             <SafeArea mv={32}>
                 <div className="card space-y-3">
                     <h2 className="text-xl font-semibold">Mensaje libre</h2>
-                    <Composer kind="free" placeholder="Escribe, pega emojis, sube stickers o graba audio…" />
+                    <Composer kind="free" num={0} placeholder="Escribe, pega emojis, sube stickers o graba audio…" />
                 </div>
             </SafeArea>
         </Wrapper>
