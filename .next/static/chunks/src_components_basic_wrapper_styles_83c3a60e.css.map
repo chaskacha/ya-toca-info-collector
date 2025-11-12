@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["file:///Users/chaskacha/Desktop/projects/ya_toca/ya_toca_backup_info_collector/src/components/basic/wrapper/styles.css"],"sourcesContent":[".wrapper {\n    align-items: flex-start;\n    display: flex;\n    flex-direction: row;\n    max-height: 100vh;\n    min-height: 100vh;\n    overflow-y: scroll;\n    overflow-x: hidden;\n}\n.wrapper-children {\n    width: 100%;\n}\n.wrapper::-webkit-scrollbar {\n    display: none;\n}"],"names":[],"mappings":"AAAA;;;;;;;;;AASA;;;;AAGA","debugId":null}}]
+}

@@ -1,0 +1,66 @@
+/* [project]/src/components/basic/footer-mobile/styles.css [app-client] (css) */
+.footer-mobile {
+  padding-top: 145px;
+  padding-bottom: 140px;
+}
+
+.footer-body-mobile {
+  flex-direction: column;
+  max-width: 1512px;
+  display: flex;
+}
+
+.footer-p-mobile {
+  font-size: 24px;
+  line-height: auto;
+  text-transform: none;
+  text-decoration: none;
+}
+
+.footer-networks-mobile {
+  flex-direction: column;
+  align-items: flex-start;
+  display: flex;
+}
+
+.footer-networks-item-mobile {
+  cursor: pointer;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 4px;
+  padding-bottom: 2px;
+  display: flex;
+}
+
+.logos-grid-mobile {
+  grid-template-columns: repeat(2, 1fr);
+  place-items: center;
+  gap: 16px;
+  margin-top: 82px;
+  display: grid;
+}
+
+.logo-img {
+  max-width: 100px;
+  height: auto;
+}
+
+.logo-img-resurgir {
+  width: 65px;
+}
+
+.logo-img-rpp {
+  width: 57px;
+}
+
+.logo-img-openmind {
+  height: 52px;
+}
+
+@media (width >= 1000px) {
+  .footer-mobile, .logos-grid-mobile {
+    display: none;
+  }
+}
+
+/*# sourceMappingURL=src_components_basic_footer-mobile_styles_css_f9ee138c._.single.css.map*/

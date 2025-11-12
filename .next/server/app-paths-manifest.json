@@ -1,0 +1,12 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/messages/route": "app/api/messages/route.js",
+  "/api/profile/route": "app/api/profile/route.js",
+  "/cabildos/station-one/page": "app/cabildos/station-one/page.js",
+  "/cabildos/station-three/page": "app/cabildos/station-three/page.js",
+  "/cabildos/station-two/page": "app/cabildos/station-two/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/free-message/page": "app/free-message/page.js",
+  "/onboarding/page": "app/onboarding/page.js",
+  "/page": "app/page.js"
+}

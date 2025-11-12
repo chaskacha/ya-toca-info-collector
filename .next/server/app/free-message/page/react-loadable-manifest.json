@@ -1,0 +1,9 @@
+{
+  "[project]/src/components/Composer.tsx [app-client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/src/components/Composer.tsx [app-client] (ecmascript, next/dynamic entry)",
+    "files": [
+      "static/chunks/_73e3ae30._.js",
+      "static/chunks/src_components_Composer_tsx_600b2edf._.js"
+    ]
+  }
+}

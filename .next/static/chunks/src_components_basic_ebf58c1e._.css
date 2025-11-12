@@ -1,0 +1,113 @@
+/* [project]/src/components/basic/safe-area/styles.css [app-client] (css) */
+.safe-area {
+  flex-direction: column;
+  max-width: 1512px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+}
+
+@media (width >= 0) and (width <= 375px) {
+  .safe-area {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+@media (width >= 375px) {
+  .safe-area {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+@media (width >= 600px) {
+  .safe-area {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (width >= 768px) {
+  .safe-area {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (width >= 1280px) {
+  .safe-area {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+@media (width >= 1440px) {
+  .safe-area {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+
+/* [project]/src/components/basic/wrapper/styles.css [app-client] (css) */
+.wrapper {
+  flex-direction: row;
+  align-items: flex-start;
+  min-height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  overflow: hidden scroll;
+}
+
+.wrapper-children {
+  width: 100%;
+}
+
+.wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.wrapper {
+  flex-direction: column;
+  min-height: 100vh;
+  display: flex;
+}
+
+.app-header {
+  z-index: 50;
+  color: #fff;
+  background: #e53016;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  box-shadow: 0 2px 8px #00000026;
+}
+
+.app-header__inner {
+  align-items: center;
+  gap: 12px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  display: flex;
+}
+
+.app-header__brand {
+  color: inherit;
+  align-items: center;
+  line-height: 0;
+  text-decoration: none;
+  display: inline-flex;
+}
+
+.app-header__spacer {
+  margin-left: auto;
+}
+
+.wrapper-children {
+  flex: 1;
+}
+
+
+/*# sourceMappingURL=src_components_basic_ebf58c1e._.css.map*/

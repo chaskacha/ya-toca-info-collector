@@ -1,0 +1,20 @@
+/* [project]/src/components/basic/wrapper/styles.css [app-client] (css) */
+.wrapper {
+  flex-direction: row;
+  align-items: flex-start;
+  min-height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  overflow: hidden scroll;
+}
+
+.wrapper-children {
+  width: 100%;
+}
+
+.wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+
+/*# sourceMappingURL=src_components_basic_wrapper_styles_83c3a60e.css.map*/
