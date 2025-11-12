@@ -93,7 +93,7 @@ export default function Composer(
             return { status: 'success', message: '¡Enviado correctamente!' };
         } catch (e: any) {
             return { status: 'error', message: e.message || 'Error' };
-        } finally { setBusy(false); markStationDone(num); router.replace('/'); }
+        } finally { setBusy(false); markStationDone(num); router.replace(num === 3 ? '/cabildos/final-message' : '/'); }
     };
 
     return (

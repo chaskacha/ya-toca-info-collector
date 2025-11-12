@@ -84,7 +84,7 @@ export default function OnboardingForm() {
 
             <input
                 type="tel"
-                className="input"
+                className="input w100"
                 inputMode="numeric"
                 autoComplete="tel"
                 placeholder="Ej. 51912345678"

@@ -854,3 +854,8 @@ body {
   width: 100%;
   max-width: 360px;
 }
+
+.btn:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
