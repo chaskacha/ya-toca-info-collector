@@ -57,6 +57,11 @@ export default function ActionButton({
                         ? 'Enviando...'
                         : label}
             </button>
+            {msg && (
+                <div className={`alert alert-${msg.type}`}>
+                    {msg.text}
+                </div>
+            )}
         </div>
     );
 }

@@ -126,8 +126,21 @@ export default function Composer({
             setBusy(false);
         }
     };
+
+    function remainingStations(afterAdding?: number): number[] {
+        try {
+            const arr = JSON.parse(localStorage.getItem('yt_stations_done') || '[]');
+            const set = new Set<number>(Array.isArray(arr) ? arr : []);
+            if (afterAdding != null) set.add(afterAdding); // simulate adding current
+            return [1, 2, 3].filter(n => !set.has(n));
+        } catch {
+            return [1, 2, 3]; // on parse error, treat as none done
+        }
+    }
+
     const back = (): Promise<void> => {
-        router.replace(num === 3 ? '/cabildos/final-message' : '/');
+        const remaining = remainingStations(num); // include this station as done
+        router.replace(remaining.length === 0 ? '/cabildos/final-message' : '/');
         return Promise.resolve();
     };
 

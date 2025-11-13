@@ -3,30 +3,31 @@
   "middleware": {
     "/": {
       "files": [
-        "server/edge-runtime-webpack.js",
-        "server/src/middleware.js"
+        "server/edge/chunks/_0d3699dc._.js",
+        "server/edge/chunks/[root-of-the-server]__dc15d093._.js",
+        "server/edge/chunks/edge-wrapper_594fdf6a.js"
       ],
-      "name": "src/middleware",
+      "name": "middleware",
       "page": "/",
       "matchers": [
         {
-          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/((?!api|onboarding|_next\\/static|_next\\/image|favicon.ico|robots.txt|sitemap.xml|assets|fonts|images|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|mp4|webm|css|js)).*))(\\.json)?[\\/#\\?]?$",
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/((?!api|onboarding|_next\\/static|_next\\/image|favicon.ico|robots.txt|sitemap.xml|assets|fonts|images|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|mp4|webm|css|js)).*))(\\\\.json)?[\\/#\\?]?$",
           "originalSource": "/((?!api|onboarding|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|assets|fonts|images|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|mp4|webm|css|js)).*)"
         }
       ],
       "wasm": [],
       "assets": [],
       "env": {
-        "__NEXT_BUILD_ID": "YQD8s3UBF0FyHIlvj26PW",
+        "__NEXT_BUILD_ID": "development",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "+O3feajbbAPqIf0iOmGia3cyCYBQLUjZNn9FJVHbZXI=",
-        "__NEXT_PREVIEW_MODE_ID": "e3f3e4efdd8b87877b802bb376b4abd8",
-        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "4e4835e4b629ee32792026f7c08b20e5b120540f9dc02346ba2b94c66f3ad743",
-        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "cd9731657c68a532e3192f271c70a7db6447b6734496159896a13d44dd23ef87"
+        "__NEXT_PREVIEW_MODE_ID": "4428042a8d45b8eebdb48f0e2b2e0f17",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "7fc4afc549b3164534073127871ef562864c03038c998a24dba6d0fe4aacdb85",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "8064aed25d5d1e568c42c38a54aaf22ccfdc4a1961a45b019cbc06fabe4333bb"
       }
     }
   },
-  "functions": {},
   "sortedMiddleware": [
     "/"
-  ]
+  ],
+  "functions": {}
 }
