@@ -45,7 +45,6 @@ export default function Home() {
             <>
               <p className="fs24">¿Qué te gustaría hacer?</p>
               <ul className="list-disc pl-6 space-y-2">
-                {/* <li><a className="underline fs24" href="/free-message">Dejar mensaje libre</a></li> */}
                 {remaining.includes(1) && <li><a className="underline fs24" href="/cabildos/station-one">Estación 1</a></li>}
                 {remaining.includes(2) && <li><a className="underline fs24" href="/cabildos/station-two">Estación 2</a></li>}
                 {remaining.includes(3) && <li><a className="underline fs24" href="/cabildos/station-three">Estación 3</a></li>}

@@ -37,16 +37,7 @@ export type Media = {
 };
 
 export type MessagePayload = {
-    type: 'free' | 'station1' | 'station2' | 'station3';
+    type: 'final' | 'station1' | 'station2' | 'station3';
     text?: string;
     media?: Media[];
-};
-
-type ChatMsg = {
-    id: string;
-    role: 'system' | 'user';
-    ts: number;
-    kind: 'text' | 'audio';
-    text?: string;
-    audio?: { url: string; mime: string; durMs?: number };
 };

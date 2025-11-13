@@ -5,7 +5,7 @@ import { getProfile, pushMessage, upsertProfile } from '@/lib/store';
 
 
 const msgSchema = z.object({
-    type: z.enum(['free', 'station1', 'station2', 'station3', 'final']),
+    type: z.enum(['station1', 'station2', 'station3', 'final']),
     text: z.string().optional(),
     images: z.array(z.object({ filename: z.string(), dataUrl: z.string().startsWith('data:') })).optional(),
     audio: z.object({ mime: z.string(), dataUrl: z.string().startsWith('data:'), durationMs: z.number().optional() }).nullable().optional(),

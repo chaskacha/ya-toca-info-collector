@@ -1,14 +1,1 @@
-{
-  "app": {
-    "[project]/src/app/_not-found/page": [],
-    "[project]/src/app/cabildos/final-message/page": [],
-    "[project]/src/app/cabildos/station-one/page": [],
-    "[project]/src/app/cabildos/station-three/page": [],
-    "[project]/src/app/cabildos/station-two/page": [],
-    "[project]/src/app/onboarding/page": [],
-    "[project]/src/app/page": []
-  },
-  "appUsingSizeAdjust": false,
-  "pages": {},
-  "pagesUsingSizeAdjust": false
-}
+{"pages":{},"app":{},"appUsingSizeAdjust":false,"pagesUsingSizeAdjust":false}
