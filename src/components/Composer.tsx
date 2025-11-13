@@ -3,12 +3,15 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { MessagePayload, Result } from '@/lib/types';
 import ActionButton from './basic/action-button/page';
 import { useRouter } from 'next/navigation';
+import { blobToDataUrl } from '@/helpers/common';
 
 type ChatMsg = {
     id: string;
     role: 'system' | 'user';
-    text: string;
     ts: number; // epoch ms
+    kind: 'text' | 'audio';
+    text?: string;
+    audio?: { url: string; mime: string; durMs?: number };
 };
 
 function markStationDone(n: number) {
@@ -55,6 +58,12 @@ export default function Composer({
     const [text, setText] = useState('');
     const [busy, setBusy] = useState(false);
 
+    // refs
+    const recRef = useRef<MediaRecorder | null>(null);
+    const streamRef = useRef<MediaStream | null>(null);
+    const chunksRef = useRef<BlobPart[]>([]);
+    const tickRef = useRef<number | null>(null);
+
     // transcript
     const [msgs, setMsgs] = useState<ChatMsg[]>(() => {
         try {
@@ -67,7 +76,7 @@ export default function Composer({
     // add intro bubble once if no history
     useEffect(() => {
         if (intro && msgs.length === 0) {
-            const first: ChatMsg = { id: crypto.randomUUID(), role: 'system', text: intro, ts: Date.now() };
+            const first: ChatMsg = { id: crypto.randomUUID(), role: 'system', text: intro, ts: Date.now(), kind: 'text' };
             setMsgs([first]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -96,12 +105,67 @@ export default function Composer({
         return out;
     }, [msgs]);
 
+    // ------------------ AUDIO RECORDER (client-side only) ------------------
+    const [recState, setRecState] = useState<'idle' | 'recording'>('idle');
+    const [elapsed, setElapsed] = useState(0);
+    const rec = useRef<MediaRecorder | null>(null);
+    const recChunks = useRef<BlobPart[]>([]);
+    const recTimer = useRef<number | null>(null);
+
+    async function startRec() {
+        if (recState === 'recording') return;
+        setElapsed(0);
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        recChunks.current = [];
+        const mime =
+            MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' :
+                MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' :
+                    MediaRecorder.isTypeSupported('audio/mp4;codecs=mp4a.40.2') ? 'audio/mp4;codecs=mp4a.40.2' :
+                        'audio/webm';
+
+        rec.current = new MediaRecorder(stream, { mimeType: mime });
+        rec.current.ondataavailable = (e) => { if (e.data.size) recChunks.current.push(e.data); };
+        rec.current.start(250);
+        setRecState('recording');
+
+        const t0 = Date.now();
+        recTimer.current = window.setInterval(() => setElapsed(Date.now() - t0), 200) as unknown as number;
+    }
+
+    async function stopRec() {
+        if (!rec.current) return;
+        const r = rec.current;
+        rec.current = null;
+
+        // stop tracks
+        r.stream.getTracks().forEach(t => t.stop());
+        try { r.stop(); } catch { }
+
+        // build blob
+        const blob = new Blob(recChunks.current, { type: r.mimeType || 'audio/webm' });
+        recChunks.current = [];
+        if (recTimer.current) { clearInterval(recTimer.current); recTimer.current = null; }
+        setRecState('idle');
+
+        // persistable data URL + chat bubble
+        const url = await blobToDataUrl(blob);
+        const msg: ChatMsg = {
+            id: crypto.randomUUID(),
+            role: 'user',
+            ts: Date.now(),
+            kind: 'audio',
+            audio: { url, mime: blob.type, durMs: elapsed },
+        };
+        setMsgs(prev => [...prev, msg]);
+        setElapsed(0);
+    }
+
     const submit = async (): Promise<Result> => {
         const raw = text.trim();
         if (!raw) return { status: 'error', message: 'Escribe un mensaje.' };
 
         // optimistic append
-        const mine: ChatMsg = { id: crypto.randomUUID(), role: 'user', text: raw, ts: Date.now() };
+        const mine: ChatMsg = { id: crypto.randomUUID(), role: 'user', text: raw, ts: Date.now(), kind: 'text' };
         setMsgs(prev => [...prev, mine]);
         setText('');
         setBusy(true);
@@ -144,6 +208,42 @@ export default function Composer({
         return Promise.resolve();
     };
 
+    const hasText = text.trim().length > 0;
+
+    function mmss(ms: number) {
+        const s = Math.floor(ms / 1000);
+        const m = Math.floor(s / 60);
+        return `${m}:${String(s % 60).padStart(2, '0')}`;
+    }
+
+    function clearTimers() {
+        if (tickRef.current) { clearInterval(tickRef.current); tickRef.current = null; }
+    }
+
+    function stopAllTracks() {
+        if (streamRef.current) {
+            streamRef.current.getTracks().forEach(t => t.stop());
+            streamRef.current = null;
+        }
+    }
+
+    function cancelRec() {
+        try {
+            if (recRef.current && recRef.current.state !== 'inactive') {
+                // stop without caring about resulting data
+                recRef.current.ondataavailable = null as any;
+                recRef.current.onstop = null as any;
+                recRef.current.stop();
+            }
+        } catch { }
+        clearTimers();
+        stopAllTracks();
+        chunksRef.current = [];      // discard any partial audio
+        setElapsed(0);
+        setRecState('idle');
+    }
+
+
     return (
         <div className="space-y-4">
             {/* CHAT VIEW */}
@@ -158,17 +258,6 @@ export default function Composer({
             >
                 {groups.map(g => (
                     <div key={g.chip}>
-                        {/* <div style={{
-                            textAlign: 'center',
-                            margin: '12px 0',
-                            fontSize: 12,
-                            fontWeight: 700,
-                            background: '#000',
-                            color: '#fff',
-                            padding: '4px 10px',
-                            borderRadius: 999
-                        }}>{g.chip}</div> */}
-
                         {g.items.map(m => (
                             <div key={m.id} style={{
                                 display: 'flex',
@@ -176,7 +265,7 @@ export default function Composer({
                                 margin: '6px 0'
                             }}>
                                 <div style={{
-                                    background: m.role === 'user' ? '#d9fdd3' : '#efefef',
+                                    background: m.role === 'user' ? '#EABF00' : '#efefef',
                                     color: '#111',
                                     padding: '10px 12px',
                                     borderRadius: 12,
@@ -184,8 +273,17 @@ export default function Composer({
                                     minWidth: '80%',
                                     boxShadow: '0 1px 1px rgba(0,0,0,.08)'
                                 }}>
-                                    <div style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{m.text}</div>
-                                    <div style={{ textAlign: 'right', fontSize: 11, color: '#666', marginTop: 4 }}>
+                                    {m.kind === 'text' && (
+                                        <div style={{ whiteSpace: 'pre-wrap', color: m.role === 'user' ? '#fff' : '#111', wordBreak: 'break-word' }}>{m.text}</div>
+                                    )}
+                                    {m.kind === 'audio' && m.audio && (
+                                        <audio
+                                            controls
+                                            src={m.audio.url}     // data: URL, survives refresh
+                                            style={{ width: '100%' }}
+                                        />
+                                    )}
+                                    <div style={{ textAlign: 'right', fontSize: 11, color: m.role === 'user' ? '#fff' : '#111', marginTop: 4 }}>
                                         {fmtTime(m.ts)}
                                     </div>
                                 </div>
@@ -195,21 +293,97 @@ export default function Composer({
                 ))}
             </div>
 
-            {/* COMPOSER */}
-            <textarea
-                ref={textareaRef}
-                className="input w100"
-                placeholder={placeholder ?? 'Escribe tu mensaje...'}
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                rows={1}
-            />
-            <ActionButton
-                label="Enviar"
-                onAction={submit}
-                disabled={busy}
-                height={48}
-            />
+            {/* COMPOSER ROW (text + mic) */}
+            <div style={{ display: 'flex', gap: 8, width: '100%' }}>
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center', width: '100%' }}>
+                    {recState === 'recording' ? (
+                        /* WhatsApp-style record bar */
+                        <div className="wa-recbar w100">
+                            <button
+                                type="button"
+                                className="wa-recbar__trash"
+                                aria-label="Descartar"
+                                onClick={cancelRec}
+                            >
+                                <img
+                                    src="https://cdn-icons-png.flaticon.com/512/860/860829.png"
+                                    alt="Eliminar"
+                                    width={20}
+                                    height={20}
+                                />
+                            </button>
+
+                            <div className="wa-recbar__time">{mmss(elapsed)}</div>
+
+                            {/* the moving dots/line */}
+                            <div className="wa-recbar__wave" aria-hidden />
+
+                            {/* big green round stop/send */}
+                            <button
+                                type="button"
+                                className="wa-recbar__send"
+                                aria-label="Detener y guardar"
+                                onClick={stopRec}
+                            >
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                                    <path d="M3 21l18-9L3 3v7l12 2-12 2v7z" />
+                                </svg>
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="wa-recbar w100">
+                            <textarea
+                                ref={textareaRef}
+                                className="input w100"
+                                placeholder={placeholder ?? 'Escribe tu mensaje...'}
+                                value={text}
+                                onChange={(e) => setText(e.target.value)}
+                                rows={1}
+                                style={{ flex: 1 }}
+                                disabled={recState !== 'idle'}
+                                onKeyDown={(e) => {
+                                    if (hasText && (e.key === 'Enter' && !e.shiftKey)) {
+                                        e.preventDefault();
+                                        if (!busy) submit();
+                                    }
+                                }}
+                            />
+                            {hasText ? (
+                                /* send text */
+                                <button
+                                    type="button"
+                                    className="btn-send"
+                                    onClick={() => !busy && submit()}
+                                    disabled={busy}
+                                    aria-label="Enviar"
+                                    title="Enviar"
+                                >
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                                        <path d="M3 21l18-9L3 3v7l12 2-12 2v7z" />
+                                    </svg>
+                                </button>
+                            ) : (
+                                /* mic (start recording) */
+                                <button
+                                    type="button"
+                                    className="btn-mic"
+                                    aria-label="Grabar audio"
+                                    title="Grabar audio"
+                                    onClick={startRec}
+                                    disabled={busy}
+                                >
+                                    <img
+                                        src="https://www.svgrepo.com/show/416937/mic-microphone-podcast.svg"
+                                        width={24}
+                                        height={24}
+                                        alt="Grabar audio"
+                                    />
+                                </button>
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
             <ActionButton
                 label="Regresar"
                 backBtn
@@ -217,7 +391,6 @@ export default function Composer({
                 disabled={busy}
                 height={48}
             />
-            {/* Optionally show a separate “Terminar” on the page to call markStationDone(num) */}
         </div>
     );
 }

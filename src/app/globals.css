@@ -146,6 +146,10 @@ textarea {
   margin: 0;
 }
 
+textarea {
+  border: none !important;
+}
+
 /* Animate each item */
 .fade-in {
   animation: fadeInUp 0.4s ease-in-out;
@@ -487,6 +491,10 @@ body {
 
 .textWhite {
   color: white;
+}
+
+.textBlack {
+  color: black;
 }
 
 .outlineWhite {
@@ -872,3 +880,149 @@ body {
   opacity: .6;
   cursor: not-allowed;
 }
+
+.btn-mic {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: none;
+  background: #eabf00;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.btn-mic-stop {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: none;
+  background: #EABF00;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.wa-recbar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 28px;
+  padding: 10px 12px;
+  min-height: 52px;
+}
+
+.wa-recbar__trash {
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: .8;
+}
+
+.wa-recbar__trash:hover {
+  opacity: 1;
+}
+
+.wa-recbar__time {
+  width: 48px;
+  /* 0:10 */
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #111;
+}
+
+/* animated dotted line */
+.wa-recbar__wave {
+  flex: 1;
+  height: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.wa-recbar__wave::before {
+  /* thin baseline */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: #c7c7c7;
+  transform: translateY(-50%);
+}
+
+.wa-recbar__wave::after {
+  /* moving dots */
+  content: "";
+  position: absolute;
+  left: -120px;
+  right: -120px;
+  top: 50%;
+  height: 6px;
+  transform: translateY(-50%);
+  background: repeating-linear-gradient(90deg,
+      #444 0 2px,
+      transparent 2px 12px);
+  animation: wa-dots 1.1s linear infinite;
+  opacity: .9;
+}
+
+@keyframes wa-dots {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 120px 0;
+  }
+}
+
+/* big round green button */
+.wa-recbar__send {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  border-radius: 50%;
+  border: none;
+  background: #eabf00;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .15);
+}
+
+.wa-recbar__send:active {
+  transform: scale(.98);
+}
+
+/* existing buttons you already use */
+.btn-mic,
+.btn-send {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  border-radius: 50%;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: #eabf00;
+  /* send */
+}
+
+.btn-mic {
+  background: #eabf00;
+  color: #111;
+}
+
+/* mic color */

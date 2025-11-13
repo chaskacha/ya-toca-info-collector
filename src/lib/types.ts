@@ -27,11 +27,26 @@ export type UploadImage = { filename: string; dataUrl: string };
 export type UploadAudio = { mime: string; dataUrl: string; durationMs?: number } | null;
 
 
-export type MessagePayload = {
-    type: 'free' | 'station1' | 'station2' | 'station3' | 'final';
-    text?: string;
-    images?: UploadImage[];
-    audio?: UploadAudio;
+export type Result = { status: 'success' | 'error'; message: string };
+
+export type Media = {
+    kind: 'audio';
+    url: string;          // served by our /api/media/… endpoint
+    mime: string;         // e.g. audio/webm or audio/mp4
+    durationMs?: number;  // optional
 };
 
-export type Result = { status: 'success' | 'error'; message: string };
+export type MessagePayload = {
+    type: 'free' | 'station1' | 'station2' | 'station3';
+    text?: string;
+    media?: Media[];
+};
+
+type ChatMsg = {
+    id: string;
+    role: 'system' | 'user';
+    ts: number;
+    kind: 'text' | 'audio';
+    text?: string;
+    audio?: { url: string; mime: string; durMs?: number };
+};
