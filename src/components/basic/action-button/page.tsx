@@ -34,7 +34,7 @@ export default function ActionButton({
             const r = (res as Result) ?? { status: 'success', message: 'Listo.' };
             setMsg({ type: r.status, text: r.message });
         } catch (err: any) {
-            setMsg({ type: 'error', text: err?.message || 'Ocurrió un error.' });
+            setMsg({ type: 'error', text: err?.message || 'Vuelve a intentar, por favor.' });
         } finally {
             setTimeout(() => {
                 setBusy(false);

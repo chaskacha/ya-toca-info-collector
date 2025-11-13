@@ -1,14 +1,8 @@
 {
-  "/api/messages/route": "app/api/messages/route.js",
   "/_not-found/page": "app/_not-found/page.js",
-  "/api/profile/route": "app/api/profile/route.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/api/opiniones-hero/route": "app/api/opiniones-hero/route.js",
-  "/api/opiniones/route": "app/api/opiniones/route.js",
-  "/cabildos/station-three/page": "app/cabildos/station-three/page.js",
-  "/cabildos/final-message/page": "app/cabildos/final-message/page.js",
-  "/page": "app/page.js",
+  "/api/messages/route": "app/api/messages/route.js",
+  "/api/transcribe/route": "app/api/transcribe/route.js",
   "/cabildos/station-one/page": "app/cabildos/station-one/page.js",
-  "/onboarding/page": "app/onboarding/page.js",
-  "/cabildos/station-two/page": "app/cabildos/station-two/page.js"
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js"
 }

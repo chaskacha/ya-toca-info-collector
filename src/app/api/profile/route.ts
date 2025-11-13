@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getOrSetSession } from '@/lib/session';
 import { upsertProfile, getProfile } from '@/lib/store';
+import { query } from '@/lib/db';
 
 
 const schema = z.object({
@@ -37,7 +38,31 @@ export async function POST(req: Request) {
 
 
     const { demographics, consent, phone } = parsed.data;
+    // set the data to the DB
+    const res = await query(
+        `INSERT INTO participantes
+           (edad, fechacreacion, nombre_de_cabildo, genero, telefono,
+            region, region_actual, poblacion, grupoetnico, rol, nivelinstruccion)
+         VALUES
+           ($1, CURRENT_DATE, $2, $3, $4,
+            $5, $6, $7, $8, $9, $10)
+         RETURNING id`,
+        [
+            demographics.age,
+            'UTEC',
+            demographics.gender,
+            phone,
+            demographics.originRegion,
+            demographics.cabildoRegion,
+            demographics.population,
+            demographics.ethnicity,
+            demographics.occupation,
+            demographics.education,
+        ]
+    );
+    const rowId = res.rows[0]?.id ?? null;
     const updated = upsertProfile(await sid, (p) => {
+        p.id = rowId;
         p.phone = phone;
         p.cabildoName = 'UTEC';
         p.demographics = demographics;
@@ -52,6 +77,9 @@ export async function POST(req: Request) {
     (await
         // mark cookie to pass middleware gate
         cookies()).set('ytc_onboarded', '1', { httpOnly: false, sameSite: 'lax', path: '/', secure: true });
+    (await
+        // mark cookie to pass middleware gate
+        cookies()).set('yt_profile', JSON.stringify(updated), { httpOnly: false, sameSite: 'lax', path: '/', secure: true });
 
 
     return NextResponse.json({ ok: true, profile: updated });

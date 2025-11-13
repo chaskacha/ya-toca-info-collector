@@ -7,3 +7,6 @@ export function blobToDataUrl(blob: Blob): Promise<string> {
         fr.readAsDataURL(blob);
     });
 }
+export function sanitizeFilename(name: string) {
+    return name.replace(/[^\w.-]/g, '_');
+}

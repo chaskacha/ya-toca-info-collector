@@ -158,6 +158,36 @@ export default function Composer({
         };
         setMsgs(prev => [...prev, msg]);
         setElapsed(0);
+
+        // 2) send to /api/transcribe
+        try {
+            const file = new File([blob], `audio-${Date.now()}.${/mp4|aac/.test(blob.type) ? 'm4a' : 'webm'}`, { type: blob.type });
+            const fd = new FormData();
+            fd.append('file', file);
+            fd.append('lang', 'es'); // optional hint
+
+            const trRes = await fetch('/api/transcribe', { method: 'POST', body: fd });
+            const trJson = await trRes.json();
+            const transcript: string = trJson?.text?.trim?.() || '';
+
+            if (!trRes.ok || !transcript) throw new Error('No transcript');
+
+            // 4) Send transcript to your normal /api/messages endpoint
+            const payload: MessagePayload = { type: kind, text: transcript };
+            const res = await fetch('/api/messages', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (!res.ok) {
+                console.warn('Failed posting transcript to /api/messages');
+            } else if (markDoneOnFirstSend) {
+                markStationDone(num);
+            }
+        } catch (err) {
+            console.warn('Transcription failed; keeping audio only.', err);
+            // You could append a tiny “No se pudo transcribir” system bubble if desired
+        }
     }
 
     const submit = async (): Promise<Result> => {
@@ -185,7 +215,7 @@ export default function Composer({
             // rollback on error
             setMsgs(prev => prev.filter(x => x.id !== mine.id));
             setText(raw);
-            return { status: 'error', message: e?.message || 'Error' };
+            return { status: 'error', message: e?.message || 'Vuelve a intentar, por favor.' };
         } finally {
             setBusy(false);
         }

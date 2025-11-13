@@ -11,6 +11,7 @@ export type Demographics = {
 
 
 export type Profile = {
+    id: string | null;
     sessionId: string;
     phone: string | null;
     cabildoName: string | null;

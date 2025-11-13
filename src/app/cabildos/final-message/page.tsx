@@ -21,7 +21,7 @@ export default function Page() {
             setWord('');
             back();
             return { status: 'success', message: '¡Enviado correctamente!' };
-        } catch { return { status: 'error', message: 'Error' }; } finally { setBusy(false); }
+        } catch { return { status: 'error', message: 'Vuelve a intentar, por favor.' }; } finally { setBusy(false); }
     };
 
     const back = (): Promise<void> => {

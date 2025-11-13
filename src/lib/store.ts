@@ -11,6 +11,7 @@ export const mem = g.__YTC_STORE__ as { profiles: Map<string, Profile>; messages
 
 export function upsertProfile(sessionId: string, mut: (p: Profile) => void) {
     const curr = mem.profiles.get(sessionId) ?? {
+        id: null,
         sessionId,
         phone: null,
         cabildoName: null,

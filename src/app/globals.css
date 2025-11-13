@@ -1017,12 +1017,26 @@ body {
   justify-content: center;
   color: #fff;
   background: #eabf00;
-  /* send */
+  transition: transform 120ms ease, box-shadow 120ms ease;
 }
 
-.btn-mic {
-  background: #eabf00;
-  color: #111;
+/* hover (desktop) */
+.btn-mic:hover,
+.btn-send:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, .18);
 }
 
-/* mic color */
+/* press */
+.btn-mic:active,
+.btn-send:active {
+  transform: scale(0.94);
+}
+
+/* accessibility */
+@media (prefers-reduced-motion: reduce) {
+
+  .btn-mic,
+  .btn-send {
+    transition: none;
+  }
+}
