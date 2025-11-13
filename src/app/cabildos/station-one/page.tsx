@@ -10,20 +10,33 @@ export default function Page() {
         0: useRef<HTMLTextAreaElement | null>(null),
         1: useRef<HTMLTextAreaElement | null>(null),
         2: useRef<HTMLTextAreaElement | null>(null),
-      };
+    };
     return (
         <Wrapper>
             <div className="admin-topics">
                 <SafeArea mv={32}>
                     <div className="card space-y-3">
                         <h2 className="thunder-fw-bold-lc fs48 uppercase">Estación 1: La catarsis</h2>
-                        <div>{profile?.waId}</div>
-                        <p className="help fs24">Cuéntanos cómo te sentiste después de la conversación. Puedes hacerlo como quieras: texto, audio, emoji, lo que mejor te salga. Habla como si se lo contaras a un/a amigo/a. Aquí van unas preguntas para inspirarte:
-                        <div>- ¿Qué te choca o te frustra de vivir en este país?</div>
-                        <div>- ¿Y qué te da esperanza o te hace sentir que sí se puede?</div>
+                        {/* <p className="help fs24">Cuéntanos cómo te sentiste después de la conversación. Puedes hacerlo como quieras: texto, audio, emoji, lo que mejor te salga. Habla como si se lo contaras a un/a amigo/a. Aquí van unas preguntas para inspirarte:
+                            <div>- ¿Qué te choca o te frustra de vivir en este país?</div>
+                            <div>- ¿Y qué te da esperanza o te hace sentir que sí se puede?</div>
                         </p>
-                        <br />
-                        <Composer kind="station1" num={1} textareaRef={textareaRefs[0]} />
+                        <br /> */}
+                        <Composer
+                            num={1}
+                            kind="station1"
+                            textareaRef={textareaRefs[0]}
+                            intro={
+                                'Cuéntanos cómo te sentiste después de la conversación. ' +
+                                'Puedes hacerlo como quieras: texto, audio, emoji, lo que mejor te salga. ' +
+                                'Habla como si se lo contaras a un/a amigo/a.\n' +
+                                '- ¿Qué te choca o te frustra de vivir en este país?\n' +
+                                '- ¿Y qué te da esperanza o te hace sentir que sí se puede?'
+                            }
+                            // If you want to mark the station done only after first message:
+                            markDoneOnFirstSend
+                        />
+
                     </div>
                 </SafeArea>
             </div>

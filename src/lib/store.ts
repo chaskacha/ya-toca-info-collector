@@ -32,6 +32,6 @@ export function getProfile(sessionId: string) {
 
 export function pushMessage(sessionId: string, m: MessagePayload) {
     const list = mem.messages.get(sessionId) ?? [];
-    list.push(m);
+    list.push({ ...m, _id: crypto.randomUUID(), _ts: Date.now() } as any);
     mem.messages.set(sessionId, list);
 }

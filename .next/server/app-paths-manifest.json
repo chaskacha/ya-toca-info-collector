@@ -1,15 +1,15 @@
 {
   "/api/messages/route": "app/api/messages/route.js",
-  "/api/profile/route": "app/api/profile/route.js",
   "/_not-found/page": "app/_not-found/page.js",
+  "/api/profile/route": "app/api/profile/route.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/api/opiniones/route": "app/api/opiniones/route.js",
   "/api/opiniones-hero/route": "app/api/opiniones-hero/route.js",
-  "/cabildos/station-one/page": "app/cabildos/station-one/page.js",
+  "/api/opiniones/route": "app/api/opiniones/route.js",
   "/cabildos/final-message/page": "app/cabildos/final-message/page.js",
   "/cabildos/station-three/page": "app/cabildos/station-three/page.js",
+  "/cabildos/station-one/page": "app/cabildos/station-one/page.js",
   "/cabildos/station-two/page": "app/cabildos/station-two/page.js",
+  "/free-message/page": "app/free-message/page.js",
   "/onboarding/page": "app/onboarding/page.js",
-  "/page": "app/page.js",
-  "/free-message/page": "app/free-message/page.js"
+  "/page": "app/page.js"
 }

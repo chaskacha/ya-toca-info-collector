@@ -1,5 +1,5 @@
 'use client';
-import { useForm } from 'react-hook-form';
+import { useForm, useFormState } from 'react-hook-form';
 import ActionButton from './basic/action-button/page';
 import { REGIONES_PERU } from '@/constants/demos';
 import { normalizePeruMobile, PERU_MOBILE_REGEX } from '@/helpers/phone';
@@ -24,13 +24,13 @@ type Form = {
     phone: string;
     gender: string; age: string; population: string; ethnicity: string; occupation: string; education: string;
     originRegion: string; cabildoRegion: string;
-    consent: 'yes' | 'no';
+    consent: boolean;
 };
 
 
 export default function OnboardingForm() {
     const router = useRouter();
-    const { register, handleSubmit, formState: { isSubmitting } } = useForm<Form>({ defaultValues: { consent: 'yes' } });
+    const { register, handleSubmit, formState: { isSubmitting, isValid } } = useForm<Form>({ defaultValues: { consent: true } });
 
 
     const onSubmit = async (d: Form) => {
@@ -63,6 +63,10 @@ export default function OnboardingForm() {
         router.replace('/');
     };
 
+    const isDisabled = () => {
+        return !isValid || isSubmitting;
+    };
+
 
     const Select = ({ name, options, label }: { name: keyof Form; options: readonly string[]; label: string }) => (
         <label className="block space-y-1">
@@ -81,7 +85,7 @@ export default function OnboardingForm() {
                 <span className="label mb8 mr8">Nombre del Cabildo</span>
                 <input className="input" placeholder="Ej. Cabildo San Miguel" {...register('cabildoName', { required: true })} />
             </label> */}
-
+            <div className="help fs18" style={{ margin: 0 }}>Déjanos tu número de teléfono:</div>
             <input
                 type="tel"
                 className="input w100"
@@ -104,6 +108,7 @@ export default function OnboardingForm() {
                     if (norm !== input.value) input.value = norm;
                 }}
             />
+            <div style={{ minHeight: 4 }} />
             <Select name={'gender'} options={DEMO.gender} label="Género" />
             <Select name={'age'} options={DEMO.age} label="Edad" />
             <Select name={'population'} options={DEMO.population} label="Población" />
@@ -122,20 +127,15 @@ export default function OnboardingForm() {
             />
 
 
-            <fieldset className="space-y-2">
-                <legend className="label fs24">¿Autorizas uso anónimo de tus respuestas?</legend>
-                <label className="flex items-center gap-2 fs24"><input type="radio" value="yes" {...register('consent', { required: true })} /> Sí, acepto</label>
-                <label className="flex items-center gap-2 fs24"><input type="radio" value="no" {...register('consent', { required: true })} /> No acepto</label>
-            </fieldset>
-
+            <input type="checkbox" {...register('consent', { required: true })} />
+            <label htmlFor="consent" className="help fs18 ml8">He leído y acepto las condiciones de tratamiento de mis datos personales, conforme a la Ley N 29733.</label>
 
             <ActionButton
                 label="Guardar y continuar"
                 onAction={handleSubmit(onSubmit)}
-                disabled={isSubmitting}
+                disabled={isDisabled()}
                 height={48}
             />
-            <br />
         </form>
     );
 }

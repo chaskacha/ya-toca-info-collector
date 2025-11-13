@@ -16,7 +16,7 @@ export type Profile = {
     cabildoName: string | null;
     demographics: Demographics;
     demographicsCompleted: boolean;
-    consent?: 'yes' | 'no';
+    consent?: boolean;
     cabildoCompleted?: boolean;
     stationsDone: number[]; // 1..3
     finalWord?: string;

@@ -29,6 +29,10 @@ button:focus-visible {
   font-size: 24px !important;
 }
 
+input[type="checkbox"] {
+  margin: 0;
+}
+
 select {
   border: 1px solid #dcdcdc;
   width: -webkit-fill-available;
@@ -139,6 +143,7 @@ textarea {
   border: 1px solid #dcdcdc;
   padding: 8px;
   font-size: 24px !important;
+  margin: 0;
 }
 
 /* Animate each item */
@@ -354,6 +359,10 @@ body {
   margin-top: 16px;
 }
 
+.mt24 {
+  margin-top: 24px;
+}
+
 .mb2 {
   margin-bottom: 2px;
 }
@@ -372,6 +381,10 @@ body {
 
 .mb30 {
   margin-bottom: 30px;
+}
+
+.ml8 {
+  margin-left: 8px;
 }
 
 .mr8 {
@@ -657,7 +670,7 @@ body {
 }
 
 .btn-primary {
-  background-color: #715FDE;
+  background-color: #e53016;
   color: white;
   padding: 8px 16px;
   cursor: pointer;

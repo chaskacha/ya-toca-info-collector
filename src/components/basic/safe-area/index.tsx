@@ -11,6 +11,7 @@ const SafeArea: React.FC<Props> = ({ children, mv = 60 }) => {
         <div className="safe-area w100">
             <div style={{ marginTop: mv }} />
             {children}
+            <div style={{ marginBottom: mv }} />
         </div>
     )
 }

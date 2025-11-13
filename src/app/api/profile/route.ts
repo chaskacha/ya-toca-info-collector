@@ -17,7 +17,7 @@ const schema = z.object({
         originRegion: z.string(),
         cabildoRegion: z.string(),
     }),
-    consent: z.enum(['yes', 'no']),
+    consent: z.boolean(),
     phone: z.string().trim().min(1, 'Requerido'),
 });
 

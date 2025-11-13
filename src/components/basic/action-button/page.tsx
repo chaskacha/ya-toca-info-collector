@@ -10,6 +10,7 @@ type Props = {
     disabled?: boolean;
     height?: number;          // default 48
     autoHideMs?: number;      // default 4000
+    backBtn?: boolean;
 };
 
 export default function ActionButton({
@@ -20,6 +21,7 @@ export default function ActionButton({
     disabled,
     height = 48,
     autoHideMs = 4000,
+    backBtn = false,
 }: Props) {
     const [busy, setBusy] = useState(false);
     const [msg, setMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -42,26 +44,19 @@ export default function ActionButton({
     };
 
     return (
-        <div className="mb24">
+        <div className="mb24 mt16">
             <button
-                className={`btn w100 fw700 fs16 uppercase ${className}`}
+                className={`btn ${backBtn ? 'btn-primary' : ''} w100 fw700 fs16 uppercase ${className}`}
                 style={{ height, ...style }}
                 onClick={handleClick}
                 disabled={disabled || busy}
             >
-                {busy ? 'Enviando...' : label}
+                {backBtn
+                    ? label
+                    : busy
+                        ? 'Enviando...'
+                        : label}
             </button>
-
-            {msg && (
-                <div
-                    className={`notice ${msg.type}`}
-                    role="status"
-                    aria-live="polite"
-                    style={{ marginTop: 8 }}
-                >
-                    {msg.text}
-                </div>
-            )}
         </div>
     );
 }

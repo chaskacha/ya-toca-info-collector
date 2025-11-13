@@ -4,7 +4,6 @@ export type Profile = {
     demographicsCompleted: boolean;
     cabildoCompleted: boolean;
     stationsDone: number[];
-    consent?: 'yes' | 'no';
     lastCabildoName?: string | null;
     demographics?: {
         gender?: string | null;

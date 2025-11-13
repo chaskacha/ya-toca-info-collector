@@ -9,7 +9,7 @@ export default function Page() {
             <div className="admin-topics">
                 <SafeArea mv={32}>
                     <div className="card space-y-3">
-                        <h2 className="thunder-fw-bold-lc fs48 uppercase">Onboarding Cabildo UTEC</h2>
+                        <h2 className="thunder-fw-bold-lc fs48 uppercase">Cabildo UTEC</h2>
                         <p className="help fs18">Antes de empezar, ayúdanos respondiendo algunas preguntas para conocerte mejor. Siempre puedes marcar “prefiero no contestar” si deseas mantener reservado algún dato.
                         </p>
                         <OnboardingForm />
