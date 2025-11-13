@@ -987,10 +987,9 @@ body {
 
 /* big round green button */
 .wa-recbar__send {
-  width: 52px;
   height: 52px;
   min-width: 52px;
-  border-radius: 50%;
+  border-radius: 5px;
   border: none;
   background: #eabf00;
   color: #fff;
@@ -998,6 +997,7 @@ body {
   align-items: center;
   justify-content: center;
   box-shadow: 0 3px 8px rgba(0, 0, 0, .15);
+  gap: 4px;
 }
 
 .wa-recbar__send:active {
@@ -1018,6 +1018,12 @@ body {
   color: #fff;
   background: #eabf00;
   transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.btn-send {
+  width: unset !important;
+  border-radius: 5px !important;
+  gap: 4px;
 }
 
 /* hover (desktop) */

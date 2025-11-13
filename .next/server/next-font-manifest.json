@@ -2,6 +2,7 @@
   "app": {
     "[project]/src/app/_not-found/page": [],
     "[project]/src/app/cabildos/station-one/page": [],
+    "[project]/src/app/onboarding/page": [],
     "[project]/src/app/page": []
   },
   "appUsingSizeAdjust": false,

@@ -355,7 +355,8 @@ export default function Composer({
                                 aria-label="Detener y guardar"
                                 onClick={stopRec}
                             >
-                                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                                <div className="fs14">Enviar</div>
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
                                     <path d="M3 21l18-9L3 3v7l12 2-12 2v7z" />
                                 </svg>
                             </button>
@@ -388,7 +389,8 @@ export default function Composer({
                                     aria-label="Enviar"
                                     title="Enviar"
                                 >
-                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                                    <div className='fs14'>Enviar</div>
+                                    <svg style={{ minWidth: '18px', minHeight: '18px' }} viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
                                         <path d="M3 21l18-9L3 3v7l12 2-12 2v7z" />
                                     </svg>
                                 </button>
