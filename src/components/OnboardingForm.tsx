@@ -37,7 +37,7 @@ export default function OnboardingForm() {
         const res = await fetch('/api/profile', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                cabildoName: 'UTEC',
+                cabildoName: d.cabildoName,
                 phone: d.phone,
                 demographics: {
                     gender: d.gender,
@@ -107,6 +107,14 @@ export default function OnboardingForm() {
                     const norm = normalizePeruMobile(input.value);
                     if (norm !== input.value) input.value = norm;
                 }}
+            />
+            <div style={{ minHeight: 4 }} />
+            <div className="help fs18" style={{ margin: 0 }}>¿Cómo se llama el Cabildo en el que estás participando? Pon el nombre que tu grupo haya elegido:</div>
+            <input
+                type="text"
+                className="input w100"
+                placeholder="Ej. Cabildo San Miguel"
+                {...register('cabildoName', { required: true })}
             />
             <div style={{ minHeight: 4 }} />
             <Select name={'gender'} options={DEMO.gender} label="Género" />

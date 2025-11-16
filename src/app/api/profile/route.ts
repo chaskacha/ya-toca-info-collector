@@ -37,7 +37,7 @@ export async function POST(req: Request) {
     if (!parsed.success) return NextResponse.json({ error: parsed.error.format() }, { status: 400 });
 
 
-    const { demographics, consent, phone } = parsed.data;
+    const { demographics, consent, phone, cabildoName } = parsed.data;
     // set the data to the DB
     const res = await query(
         `INSERT INTO participantes
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
          RETURNING id`,
         [
             demographics.age,
-            'UTEC',
+            cabildoName,
             demographics.gender,
             phone,
             demographics.originRegion,
@@ -64,7 +64,7 @@ export async function POST(req: Request) {
     const updated = upsertProfile(await sid, (p) => {
         p.id = rowId;
         p.phone = phone;
-        p.cabildoName = 'UTEC';
+        p.cabildoName = cabildoName;
         p.demographics = demographics;
         p.demographicsCompleted = true;
         p.consent = consent;
