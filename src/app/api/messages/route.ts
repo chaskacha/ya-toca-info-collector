@@ -21,7 +21,7 @@ const STATION_ID: Record<string, number> = {
     final: 15,    // Cierre
 };
 
-const ID_CABILDO = 68;
+const ID_CABILDO = null;
 
 
 export async function POST(req: Request) {
