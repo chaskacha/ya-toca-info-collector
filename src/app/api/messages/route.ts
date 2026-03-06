@@ -21,7 +21,7 @@ const STATION_ID: Record<string, number> = {
     final: 15,    // Cierre
 };
 
-const ID_CABILDO = null;
+const ID_CABILDO = process.env.ID_CABILDO ? Number(process.env.ID_CABILDO) : null;
 
 
 export async function POST(req: Request) {
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
             const p = JSON.parse(decodeURIComponent(raw));
             // handle either {id: ...} or {profile: {id: ...}}
             participantId = p?.id ?? p?.profile?.id ?? null;
-        } catch {}
+        } catch { }
     }
     // if (!profile?.demographicsCompleted) return NextResponse.json({ error: 'Onboarding required' }, { status: 403 });
 
