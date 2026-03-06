@@ -22,6 +22,7 @@ const schema = z.object({
     phone: z.string().trim().min(1, 'Requerido'),
 });
 
+const ID_CABILDO = process.env.ID_CABILDO ? Number(process.env.ID_CABILDO) : null;
 
 export async function GET() {
     const sid = getOrSetSession();
@@ -42,10 +43,10 @@ export async function POST(req: Request) {
     const res = await query(
         `INSERT INTO participantes
            (edad, fechacreacion, nombre_de_cabildo, genero, telefono,
-            region, region_actual, poblacion, grupoetnico, rol, nivelinstruccion)
+            region, region_actual, poblacion, grupoetnico, rol, nivelinstruccion, id_cabildo)
          VALUES
            ($1, CURRENT_DATE, $2, $3, $4,
-            $5, $6, $7, $8, $9, $10)
+            $5, $6, $7, $8, $9, $10, $11)
          RETURNING id`,
         [
             demographics.age,
@@ -58,6 +59,7 @@ export async function POST(req: Request) {
             demographics.ethnicity,
             demographics.occupation,
             demographics.education,
+            ID_CABILDO,
         ]
     );
     const rowId = res.rows[0]?.id ?? null;
